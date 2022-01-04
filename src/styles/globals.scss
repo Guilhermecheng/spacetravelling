@@ -2,6 +2,20 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: "Inter", sans-serif;
 }
+
+:root {
+  // colors
+  --background-color: #282C34;
+  --white: #fff;
+  --heading-gray: #F8F8F8;
+  --body-gray: #D7D7D7;
+  --info-gray: #BBB;
+
+  // widths
+  --container-max-width: 700px;
+}
+
 
 // TODO

@@ -1,1 +1,66 @@
 // TODO
+
+
+.home {
+    background: var(--background-color);
+    display: flex;
+    justify-content: center;
+    height: calc(100vh - 105px);    
+}
+
+.postsList {
+    max-width: var(--container-max-width);
+    width: 100%;
+  
+
+    a {
+        display: block;
+        text-decoration: none;
+        color: var(--heading-gray);
+        margin-bottom: 3rem;
+
+        & + a {
+            margin-top: 3rem;
+        }
+
+        h1 {
+            font-size: 1.75rem;
+        }
+
+        p {
+            margin-top: 0.5rem;
+            color: var(--body-gray);
+            font-size: 1.125rem;
+        }
+    }
+
+    .postCreationInfo {
+        display: flex;
+        // flex-direction: row;
+    
+        margin-top: 1.5rem;
+        align-items: center;
+    
+        color: var(--info-gray);
+    
+        p {
+            font-size: 0.875rem;
+            line-height: 0;    
+        }
+    
+        span {
+            display: flex;
+    
+            * + * {
+                margin-left: 0.4rem;
+            }
+    
+            & + span {
+                margin-left: 1.2rem;
+            }
+        }
+    }
+}
+
+
+

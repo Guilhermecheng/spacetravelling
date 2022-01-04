@@ -1,1 +1,17 @@
-// TODO
+.header {
+    background: var(--background-color);
+
+    height: 105px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.headerContent {
+    max-width: var(--container-max-width);
+    width: 100%;
+    float: left;
+}
