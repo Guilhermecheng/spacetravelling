@@ -114,7 +114,7 @@ export default function Home({ postsResponse }: any) {
             }
 
             {prismicNextPage ? (
-              <button onClick={() => fetchingNextPage(prismicNextPage)}>Carregar mais posts</button>
+              <span className={styles.loadMoreBtn} onClick={() => fetchingNextPage(prismicNextPage)}>Carregar mais posts</span>
             ) : (
               <></>
             )}
