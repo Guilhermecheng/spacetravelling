@@ -5,7 +5,8 @@
     background: var(--background-color);
     display: flex;
     justify-content: center;
-    height: calc(100vh - 105px);    
+    min-height: calc(100vh - 105px);    
+    height: 100%
 }
 
 .postsList {
