@@ -8,6 +8,8 @@ import ReactHtmlParser from 'react-html-parser';
 import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR/index';
 
+import { FiUser, FiCalendar, FiClock } from 'react-icons/fi';
+
 import commonStyles from '../../styles/common.module.scss';
 import styles from './post.module.scss';
 
@@ -35,27 +37,52 @@ interface PostProps {
 export default function Post({ post }: PostProps) {  
 
   console.log(post)
+  const backgroundImg = post.data.banner.url;
 
   return (
-    <>
-      <h1>{post.data.title}</h1>
-      <h1>{post.first_publication_date}</h1>
+    <div className={styles.postPage}>
+      <div className={styles.postBanner} style={{ backgroundImage: `url(${backgroundImg})` }}></div>
 
-      {post.data.content.map((contentPart) => {
-        
-        return (
-          <>
-            <div>
-              {contentPart.heading}
-            </div>
+      <div className={styles.postContent}>        
+        <section className={commonStyles.contentContainer}>
+          <h1>{post.data.title}</h1>
+          <div className={styles.importantInfo}>
 
-            <div>
-              {ReactHtmlParser(contentPart.body)}
-            </div>
-          </>
-        )
-      })}
-    </>
+            <span>
+              <FiCalendar />
+              <p>{post.first_publication_date}</p>
+            </span>
+
+            <span>
+              <FiUser />
+              <p>{post.data.author}</p>
+            </span>
+
+            <span>
+            <FiClock />
+            <p>reading time</p> {/* to be calculated */}
+            </span>
+          </div>
+
+          <section className={styles.contentSection}>
+            {post.data.content.map((contentPart) => {
+              
+              return (
+                <div key={contentPart.heading}>
+                  <h3 className={styles.contentBodySubtitle}>
+                    {contentPart.heading}
+                  </h3>
+
+                  <div className={styles.contentBodyText}>
+                    {ReactHtmlParser(contentPart.body)}
+                  </div>
+                </div>
+              )
+            })}
+          </section>
+        </section>
+      </div>
+    </div>
   )
 }
 
