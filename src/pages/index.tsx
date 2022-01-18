@@ -23,6 +23,7 @@ interface Post {
     title: string;
     subtitle: string;
     author: string;
+    nome_do_autor: string;
   };
 }
 
@@ -35,9 +36,9 @@ interface HomeProps {
   postsPagination: PostPagination;
 }
 
-export default function Home({ postsResponse }: any) {
+export default function Home({ postsPagination }: HomeProps) {
 
-  async function fetchingNextPage(nextPage) {
+  async function fetchingNextPage(nextPage: string) {
     if(nextPage) {
       const response = await fetch(nextPage);
       const json = await response.json();
@@ -49,7 +50,7 @@ export default function Home({ postsResponse }: any) {
     } 
   }
 
-  function formattingPostsList(pagePostList) {
+  function formattingPostsList(pagePostList: PostPagination) {
     // console.log(pagePostList)
     const pagePosts = pagePostList.results.map(post => {
       const formattedPublicationDate = format(
@@ -73,8 +74,8 @@ export default function Home({ postsResponse }: any) {
     return pagePosts
   }
 
-  const [formattedPageList, setformattedPageList] = useState(formattingPostsList(postsResponse));
-  const [prismicNextPage, setPrismicNextPage] = useState<string>(postsResponse.next_page);  
+  const [formattedPageList, setformattedPageList] = useState(formattingPostsList(postsPagination));
+  const [prismicNextPage, setPrismicNextPage] = useState<string>(postsPagination.next_page);  
 
     return (
       <>
@@ -86,6 +87,7 @@ export default function Home({ postsResponse }: any) {
           <div className={styles.postsList}>
             {
               formattedPageList.map((page_post) => {
+                console.log(page_post.data.author)
                 return(
                   <Link href={`/post/${page_post.uid}`} key={page_post.uid}>
   
@@ -101,9 +103,9 @@ export default function Home({ postsResponse }: any) {
                           <p>{page_post.first_publication_date}</p>
                         </span>
                         
-                        <span>
+                        <span>                          
                           <FiUser />
-                          <p>{page_post.data.author}</p>
+                          <p>hey {page_post.data.author}</p>
                         </span>
                         
                       </div>
@@ -130,7 +132,7 @@ export default function Home({ postsResponse }: any) {
 export const getStaticProps: GetStaticProps = async () => {
   const prismic = getPrismicClient();
 
-  const postsResponse = await prismic.query([
+  const postsPagination = await prismic.query([
     Prismic.Predicates.at('document.type', 'posts')
   ], {
     fetch: ['posts.title', 'posts.subtitle', 'posts.nome_do_autor'],
@@ -138,6 +140,6 @@ export const getStaticProps: GetStaticProps = async () => {
   });   
 
   return {
-    props: { postsResponse }
+    props: { postsPagination }
   }
 };

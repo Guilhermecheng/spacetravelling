@@ -1,12 +1,15 @@
 import styles from './header.module.scss';
+import Link from 'next/link';
 
 export function Header() {
   // TODO
   return (
     <header className={styles.header}>
-      <a className={styles.headerContent} href='/'>
-        <img src="/images/spacetravelling-logo.png" alt="spacetravelling" />
-      </a>
+      <Link href='/'>
+        <a className={styles.headerContent} >
+          <img src="/images/spacetravelling-logo.png" alt="logo" />
+        </a>
+      </Link>
     </header>
   )
 }
