@@ -51,7 +51,6 @@ export default function Home({ postsPagination }: HomeProps) {
   }
 
   function formattingPostsList(pagePostList: PostPagination) {
-    // console.log(pagePostList)
     const pagePosts = pagePostList.results.map((post) => {
       const formattedPublicationDate = format(
         new Date(post.first_publication_date),
@@ -60,7 +59,7 @@ export default function Home({ postsPagination }: HomeProps) {
           locale: ptBR
         }
       );
-      
+
       return {
         uid:post.uid,
         first_publication_date: formattedPublicationDate,
