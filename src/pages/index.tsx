@@ -52,22 +52,23 @@ export default function Home({ postsPagination }: HomeProps) {
 
   function formattingPostsList(pagePostList: PostPagination) {
     // console.log(pagePostList)
-    const pagePosts = pagePostList.results.map(post => {
+    const pagePosts = pagePostList.results.map((post) => {
       const formattedPublicationDate = format(
         new Date(post.first_publication_date),
         "dd MMM yyyy",
         {
           locale: ptBR
         }
-      )
+      );
+      
       return {
         uid:post.uid,
         first_publication_date: formattedPublicationDate,
         data: {
           title: post.data.title,
           subtitle: post.data.subtitle,
-          author: post.data.nome_do_autor,        
-        }, 
+          author: post.data.author, 
+        }
       }
     })
 
@@ -76,7 +77,7 @@ export default function Home({ postsPagination }: HomeProps) {
 
   const [formattedPageList, setformattedPageList] = useState(formattingPostsList(postsPagination));
   const [prismicNextPage, setPrismicNextPage] = useState<string>(postsPagination.next_page);  
-
+  
     return (
       <>
         <Head>
@@ -87,7 +88,7 @@ export default function Home({ postsPagination }: HomeProps) {
           <div className={styles.postsList}>
             {
               formattedPageList.map((page_post) => {
-                console.log(page_post.data.author)
+
                 return(
                   <Link href={`/post/${page_post.uid}`} key={page_post.uid}>
   
@@ -105,7 +106,7 @@ export default function Home({ postsPagination }: HomeProps) {
                         
                         <span>                          
                           <FiUser />
-                          <p>hey {page_post.data.author}</p>
+                          <p>{page_post.data.author}</p>
                         </span>
                         
                       </div>
@@ -135,7 +136,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const postsPagination = await prismic.query([
     Prismic.Predicates.at('document.type', 'posts')
   ], {
-    fetch: ['posts.title', 'posts.subtitle', 'posts.nome_do_autor'],
+    fetch: ['posts.title', 'posts.subtitle', 'posts.author'],
     pageSize: 5,    
   });   
 

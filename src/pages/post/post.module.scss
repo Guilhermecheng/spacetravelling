@@ -8,7 +8,7 @@
     justify-content: center;
     align-items: center;
 
-    padding: 5rem 0;
+    padding-top: 5rem;
 
     h1 {
         color: var(--heading-gray);
@@ -76,5 +76,18 @@
         p {
             margin-bottom: 1rem;
         }
+    }
+}
+
+.loading {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+
+    background: var(--background-color);
+
+    h1 {
+        color: var(--heading-gray);
+        margin-top: 3rem;
     }
 }
