@@ -14,6 +14,7 @@ import { FiUser, FiCalendar, FiClock } from 'react-icons/fi';
 import commonStyles from '../../styles/common.module.scss';
 import styles from './post.module.scss';
 import { useState } from 'react';
+import Comments from '../../components/Comments';
 
 interface Post {
   first_publication_date: string | null;
@@ -34,9 +35,10 @@ interface Post {
 
 interface PostProps {
   post: Post;
+  preview: boolean;
 }
 
-export default function Post({ post }: PostProps) {  
+export default function Post({ post, preview }: PostProps) {  
   const router = useRouter();
   if(router.isFallback) {
     return <div className={styles.loading}><h1>Carregando...</h1></div>
@@ -106,8 +108,13 @@ export default function Post({ post }: PostProps) {
               )
             })}
           </section>
+          <section className={styles.nextAndComments}>
+            <Comments />
+          </section>
         </section>
       </div>
+
+      {preview && <h1>It's a preview</h1>}
     </div>
   )
 }
@@ -135,11 +142,44 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 };
 
-export const getStaticProps: GetStaticProps = async context => {  
+export const getStaticProps: GetStaticProps = async ({
+  params,
+  previewData,
+  preview = false,
+}) => {  
   const prismic = getPrismicClient();
-  const post = await prismic.getByUID('posts', String(context.params?.slug), {});
-  console.log(post.data.content)
-  return {
-    props: { post }
+
+  try {
+    const response = await prismic.getByUID('posts', String(params.slug), {
+      ref: previewData?.ref ?? null
+    });
+
+    console.log(response)
+    console.log(response.data.content)
+
+    const post = {
+      first_publication_date: response.first_publication_date,
+      data: {
+        title: response.data.title,
+        banner: {
+          url: response.data.banner.url,
+        },
+        author: response.data.author,
+        content: response.data.content.map((contentp) => {
+          return {
+            heading: contentp.heading,
+            body: contentp.body,
+          }
+        })
+      }
+
+    }
+
+
+    return {
+      props: { post, preview }
+    }
+  } catch(error) {
+    throw error
   }
 };
