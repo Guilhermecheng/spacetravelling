@@ -13,8 +13,8 @@ import { FiUser, FiCalendar, FiClock } from 'react-icons/fi';
 
 import commonStyles from '../../styles/common.module.scss';
 import styles from './post.module.scss';
-import { useState } from 'react';
 import Comments from '../../components/Comments';
+import { ExitPreviewButton } from '../../components/ExitPreviewButton';
 
 interface Post {
   first_publication_date: string | null;
@@ -108,13 +108,18 @@ export default function Post({ post, preview }: PostProps) {
               )
             })}
           </section>
+
+
           <section className={styles.nextAndComments}>
             <Comments />
+            
+            {preview && <ExitPreviewButton /> }
           </section>
+
         </section>
       </div>
 
-      {preview && <h1>It's a preview</h1>}
+      
     </div>
   )
 }

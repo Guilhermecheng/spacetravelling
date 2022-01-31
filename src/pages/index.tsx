@@ -14,6 +14,7 @@ import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR/index';
 
 import { useState } from 'react';
+import { ExitPreviewButton } from '../components/ExitPreviewButton';
 
 
 interface Post {
@@ -45,15 +46,10 @@ export default function Home({ postsPagination, preview }: HomeProps): JSX.Eleme
       try {
         const response = await fetch(nextPage);
         const json = await response.json();
-        console.log(json)
   
-        if(json.message != 'Invalid access token') {
-          const formattedResponse = formattingPostsList(json.postsPagination);
-          setformattedPageList([...formattedPageList, ...formattedResponse]);
-          setPrismicNextPage(json.next_page)
-        } else {
-          console.log('error')
-        }
+        const formattedResponse = formattingPostsList(json);
+        setformattedPageList([...formattedPageList, ...formattedResponse]);
+        setPrismicNextPage(json.next_page)      
         
       } catch(err) {
         console.log(err)
@@ -62,7 +58,9 @@ export default function Home({ postsPagination, preview }: HomeProps): JSX.Eleme
   }
 
   function formattingPostsList(pagePostList: PostPagination) {
-    const pagePosts = pagePostList.results.map((post) => {
+     const p: Post[] = pagePostList.results;
+     console.log(p)
+    const pagePosts = p.map((post) => {
       const formattedPublicationDate = format(
         new Date(post.first_publication_date),
         "dd MMM yyyy",
@@ -132,11 +130,7 @@ export default function Home({ postsPagination, preview }: HomeProps): JSX.Eleme
             <></>
           )}
 
-            {preview && (
-              <Link href="/api/exit-preview">
-                <a>Sair do modo Preview</a>
-              </Link>
-            )}
+          {preview && <ExitPreviewButton /> }
         
         </div>
       </main>
