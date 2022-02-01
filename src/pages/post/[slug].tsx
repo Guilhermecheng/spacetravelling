@@ -1,5 +1,7 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
+
 
 import Prismic from '@prismicio/client';
 import { getPrismicClient } from '../../services/prismic';
@@ -37,9 +39,11 @@ interface Post {
 interface PostProps {
   post: Post;
   preview: boolean;
+  prev: { uid: string; title: string } | null;
+  next: { uid: string; title: string } | null;
 }
 
-export default function Post({ post, preview }: PostProps) {  
+export default function Post({ post, preview, prev, next }: PostProps) {  
   const router = useRouter();
   if(router.isFallback) {
     return <div className={styles.loading}><h1>Carregando...</h1></div>
@@ -126,30 +130,35 @@ export default function Post({ post, preview }: PostProps) {
             })}
           </section>
 
-          <section className={styles.nextAndComments}>
-
+          <section className={styles.nextAndComments}>            
             <div className={styles.nextAndPreview}>
-              <div className={styles.previousButton}>
-                Como utilizar hooks com vontade
-                <span>Post anterior</span>
-              </div>
-
-              <div className={styles.nextButton}>
-                tei
-                <span>Próximo post</span>
-              </div>
-
+              {prev ? (
+                <Link href={`/post/${prev.uid}`}>
+                  <div className={styles.previousButton}>
+                    { prev.title }
+                    <span>Post anterior</span>
+                  </div>
+                </Link>
+              ) : (
+                <div></div>
+              )}
+              
+              {next && (
+                <Link href={`/post/${next.uid}`}>
+                  <div className={styles.nextButton}>
+                    { next.title }
+                    <span>Próximo post</span>
+                  </div>
+                </Link>
+              )}
             </div>
 
             <Comments />
 
             {preview && <ExitPreviewButton /> }
           </section>
-
         </section>
-      </div>
-
-      
+      </div>      
     </div>
   )
 }
@@ -161,7 +170,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const posts = await prismic.query([
     Prismic.Predicates.at('document.type', 'posts')
   ], {
-    fetch: ['posts.uid'],
+    fetch: ['posts.'],
     pageSize: 5
   });
 
@@ -188,8 +197,33 @@ export const getStaticProps: GetStaticProps = async ({
     const response = await prismic.getByUID('posts', String(params.slug), {
       ref: previewData?.ref ?? null
     });
+    
 
-    console.log(response)
+    let gettingAllPages = await prismic.query([
+      Prismic.Predicates.at('document.type', 'posts')
+    ], {
+      fetch: ['posts.title'],
+      pageSize: 100,
+      ref: previewData?.ref ?? null,
+    });
+
+    let allUids = gettingAllPages.results.map((post) => {
+      return  { uid: post.uid, title: post.data.title }
+    });
+
+    let uidIndexes = allUids.map((post) => post.uid);
+
+    const postIndex = uidIndexes.indexOf(params.slug as string);
+    let prev: { uid: string; title: string } | null = null;
+    let next: { uid: string; title: string } | null = null; 
+
+    if(postIndex > 0) {
+      next = allUids[postIndex - 1];
+    } 
+
+    if((postIndex + 1) < allUids.length) {
+      prev = allUids[postIndex + 1];
+    } 
 
     const post: Post = {
       first_publication_date: response.first_publication_date,
@@ -207,12 +241,10 @@ export const getStaticProps: GetStaticProps = async ({
           }
         })
       }
-
     }
 
-
     return {
-      props: { post, preview }
+      props: { post, preview, prev, next }
     }
   } catch(error) {
     throw error
