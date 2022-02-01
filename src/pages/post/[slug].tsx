@@ -18,6 +18,7 @@ import { ExitPreviewButton } from '../../components/ExitPreviewButton';
 
 interface Post {
   first_publication_date: string | null;
+  last_publication_date: string | null;
   data: {
     title: string;
     banner: {
@@ -58,7 +59,7 @@ export default function Post({ post, preview }: PostProps) {
 
   const backgroundImg = post.data.banner.url;
   const readingTime = timeCalculate(post); 
-  console.log(readingTime)
+
   const formattedDate = format(
     new Date(post.first_publication_date),
     "dd MMM yyyy",
@@ -78,7 +79,7 @@ export default function Post({ post, preview }: PostProps) {
 
             <span>
               <FiCalendar />
-              <p>{formattedDate}</p>
+              <p>{formattedDate}</p>              
             </span>
 
             <span>
@@ -91,6 +92,22 @@ export default function Post({ post, preview }: PostProps) {
             <p>{readingTime} min</p>
             </span>
           </div>
+          
+          {post.last_publication_date && 
+            (
+              <p className={styles.lastFormattedDate}>
+                {
+                  format(
+                    new Date(post.last_publication_date),
+                    "'*editado 'd MMM yyyy' às 'p'",
+                    {
+                      locale: ptBR,
+                    }
+                  ) 
+                }
+              </p>
+            )         
+          }
 
           <section className={styles.contentSection}>
             {post.data.content.map((contentPart) => {
@@ -109,10 +126,23 @@ export default function Post({ post, preview }: PostProps) {
             })}
           </section>
 
-
           <section className={styles.nextAndComments}>
+
+            <div className={styles.nextAndPreview}>
+              <div className={styles.previousButton}>
+                Como utilizar hooks com vontade
+                <span>Post anterior</span>
+              </div>
+
+              <div className={styles.nextButton}>
+                tei
+                <span>Próximo post</span>
+              </div>
+
+            </div>
+
             <Comments />
-            
+
             {preview && <ExitPreviewButton /> }
           </section>
 
@@ -160,10 +190,10 @@ export const getStaticProps: GetStaticProps = async ({
     });
 
     console.log(response)
-    console.log(response.data.content)
 
-    const post = {
+    const post: Post = {
       first_publication_date: response.first_publication_date,
+      last_publication_date: response.last_publication_date,
       data: {
         title: response.data.title,
         banner: {

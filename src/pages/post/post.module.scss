@@ -92,3 +92,45 @@
         margin-top: 3rem;
     }
 }
+
+.lastFormattedDate {
+    margin-top: 1rem;
+    color: var(--info-gray);
+    font-style: italic;
+}
+
+.nextAndComments {
+    border-top: 1px solid rgba(rgb(215, 215, 215), 0.1);
+    margin-top: 4rem;
+    padding-top: 2rem;
+}
+
+.nextAndPreview {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 16rem;
+
+    margin: 2rem 0 3rem 0;
+    
+    color: var(--heading-gray);
+    font-size: 1.125rem;
+
+    * {
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+
+        span {
+            color: var(--highlight-pink);
+            font-weight: bold;
+            font-size: 1rem;
+            letter-spacing: 0.6px;
+            margin-top: 0.5rem;            
+        }
+    }
+
+    .nextButton {
+        align-items: flex-end;
+    }
+}
+

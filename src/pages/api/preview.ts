@@ -14,14 +14,10 @@ export function linkResolver(doc: Document) : string {
 
 export default async function Preview(req: NextApiRequest, res: NextApiResponse) {
     const { token: ref, documentId } = req.query;
-    console.log('ehy')
 
     const redirectUrl = await getPrismicClient(req)
         .getPreviewResolver(`${ref}`, `${documentId}`)
         .resolve(linkResolver, '/');
-
-        console.log('ehy')
-        console.log(redirectUrl)
 
         if (!redirectUrl) {
             return res.status(401).json({ message: 'Invalid token' });

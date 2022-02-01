@@ -53,13 +53,13 @@ export default function Home({ postsPagination, preview }: HomeProps): JSX.Eleme
         
       } catch(err) {
         console.log(err)
+        throw err;
       }
     } 
   }
 
   function formattingPostsList(pagePostList: PostPagination) {
-     const p: Post[] = pagePostList.results;
-     console.log(p)
+    const p: Post[] = pagePostList.results;
     const pagePosts = p.map((post) => {
       const formattedPublicationDate = format(
         new Date(post.first_publication_date),
@@ -150,8 +150,6 @@ export const getStaticProps: GetStaticProps<HomeProps> = async ({preview = false
     pageSize: 5,
     ref: previewData?.ref ?? null,
   });
-
-  console.log(postsResponse)
 
   const postsPagination = {
     next_page: postsResponse.next_page,

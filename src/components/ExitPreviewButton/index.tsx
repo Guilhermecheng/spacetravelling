@@ -1,8 +1,5 @@
-import * as React from 'react'
 import Link from 'next/link';
 import styles from './exitPreviewButton.module.scss';
-
-
 
 export function ExitPreviewButton(): JSX.Element  {
     return (
