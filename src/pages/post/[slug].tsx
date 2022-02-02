@@ -198,7 +198,7 @@ export const getStaticProps: GetStaticProps = async ({
       ref: previewData?.ref ?? null
     });
     
-
+    // getting posts list for previous and next pages
     let gettingAllPages = await prismic.query([
       Prismic.Predicates.at('document.type', 'posts')
     ], {
@@ -212,8 +212,8 @@ export const getStaticProps: GetStaticProps = async ({
     });
 
     let uidIndexes = allUids.map((post) => post.uid);
-
-    const postIndex = uidIndexes.indexOf(params.slug as string);
+    let postIndex = uidIndexes.indexOf(params.slug as string);
+    
     let prev: { uid: string; title: string } | null = null;
     let next: { uid: string; title: string } | null = null; 
 
