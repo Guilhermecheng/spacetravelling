@@ -250,3 +250,21 @@ export const getStaticProps: GetStaticProps = async ({
     throw error
   }
 };
+
+// const nextPost = (
+//   await prismic.query(Prismic.predicates.at('document.type', 'post'), {
+//     pageSize: 1,
+//     after: `${response.id}`,
+//     orderings: '[document.first_publication_date desc]',
+//     fetch: ['post.uid', 'post.title'],
+//   })
+// ).results[0];
+
+// const prevPost = (
+//   await prismic.query(Prismic.predicates.at('document.type', 'post'), {
+//     pageSize: 1,
+//     after: `${response.id}`,
+//     orderings: '[document.first_publication_date]',
+//     fetch: ['post.uid', 'post.title'],
+//   })
+// ).results[0];
