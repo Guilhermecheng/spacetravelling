@@ -76,8 +76,8 @@ As GettingStaticProps is called only when page is loading, a new function is cal
 
 Post pages are simple, getting an image, post creation info and the post itself. It also has a comment's section and previous / next page buttons:
 
-<div style="display: flex; align-items: center">
-  <img src="https://user-images.githubusercontent.com/62719629/154524246-7213fe62-c9e0-49e2-9def-7d38188e046b.png" height="350px" />
+<div style="display: flex">
+  <img src="https://user-images.githubusercontent.com/62719629/154524246-7213fe62-c9e0-49e2-9def-7d38188e046b.png" height="350px" /> &ensp; &ensp; &ensp;
   <img src="https://user-images.githubusercontent.com/62719629/154526190-b8f2a7ac-930d-49c4-a688-58bf976666ce.png" height="350px" />
 </div>
 
@@ -249,7 +249,7 @@ export const getStaticProps: GetStaticProps = async ({
 ```
 ### Conclusion
 
-This project was a nice way to work with NextJS functionalities, like GetStaticProps and GetStaticPaths and  Prismic API. 
+This project was a nice way to work with NextJS functionalities, like GetStaticProps and GetStaticPaths and  Prismic API.<br>
 Project is not finished though: previous and next page buttons only work for the first 100 posts, as it uses a Prismic API response from:
 
 ```javascript
